@@ -1,3 +1,4 @@
+
 " Enable Vim-Plug plugin manager
 call plug#begin()
 
