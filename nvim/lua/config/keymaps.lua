@@ -5,40 +5,50 @@
 local opts = { noremap = true, silent = true }
 
 local function tmux_or_split_switch(wincmd, tmuxdir)
-  print("hello")
   local previous_winnr = vim.fn.winnr()
   vim.api.nvim_command("silent! wincmd " .. wincmd)
+
+  -- Check if the window number did not change, indicating that the window split failed
   if previous_winnr == vim.fn.winnr() then
-    os.execute("tmux select-pane -" .. tmuxdir)
-    vim.api.nvim_command("redraw!")
+    local tmux_command = "tmux select-pane -" .. tmuxdir
+    local status = os.execute(tmux_command)
+
+    if status == 0 then
+      vim.api.nvim_command("redraw!")
+      return true -- Tmux command was successful
+    else
+      return false -- Tmux command failed
+    end
   end
+
+  return true -- Window split was successful
 end
 
 if os.getenv("TMUX") then
   vim.api.nvim_set_keymap("n", "<A-Left>", "", {
     callback = function()
-      tmux_or_split_switch("h", "l")
+      tmux_or_split_switch("h", "L")
     end,
     noremap = true,
     silent = true,
   })
   vim.api.nvim_set_keymap("n", "<A-Down>", "", {
     callback = function()
-      tmux_or_split_switch("j", "d")
+      tmux_or_split_switch("j", "D")
     end,
     noremap = true,
     silent = true,
   })
   vim.api.nvim_set_keymap("n", "<A-Up>", "", {
     callback = function()
-      tmux_or_split_switch("k", "u")
+      tmux_or_split_switch("k", "U")
     end,
     noremap = true,
     silent = true,
   })
   vim.api.nvim_set_keymap("n", "<A-Right>", "", {
     callback = function()
-      tmux_or_split_switch("l", "r")
+      tmux_or_split_switch("l", "R")
     end,
     noremap = true,
     silent = true,
