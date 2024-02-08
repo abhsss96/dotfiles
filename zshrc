@@ -133,18 +133,17 @@ tma () {
 # This loads nvm
 
 # print "Welcome to Abhishek's environment"
-CREDENTIALS_FILE=~/.dotfiles/zsh/credentials.sh
-if [ -f "$CREDENTIALS_FILE" ]; then
-  source "$CREDENTIALS_FILE"
-else
-  echo "Warning: The credentials file ($CREDENTIALS_FILE) does not exist."
-fi
-source $HOME/.oh-my-zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.sh
+# CREDENTIALS_FILE=~/.dotfiles/zsh/credentials.sh
+# if [ -f "$CREDENTIALS_FILE" ]; then
+#   source "$CREDENTIALS_FILE"
+# else
+#   echo "Warning: The credentials file ($CREDENTIALS_FILE) does not exist."
+# fi
+# source $HOME/.oh-my-zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.sh
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 eval "$(direnv hook zsh)"
 # cat "/home/abhsss/Downloads/banner (1).txt"
 
-eval "$(starship init zsh)"
 ZSH_HIGHLIGHT_STYLES[cursor]='fg=#ffffff'
