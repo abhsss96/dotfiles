@@ -8,3 +8,21 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.opt_local.foldmethod = "indent"
   end,
 })
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "scss",
+  callback = function()
+    vim.opt_local.foldmethod = "indent"
+  end,
+})
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "php",
+  callback = function()
+    vim.opt_local.foldmethod = "indent"
+  end,
+})
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "erb",
+  callback = function()
+    vim.opt_local.foldmethod = "indent"
+  end,
+})

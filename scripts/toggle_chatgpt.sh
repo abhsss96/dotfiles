@@ -6,9 +6,9 @@
 
 # TODO:Add script to map this script with shortcut key
 
-APPLICATION="Ubuntu Toggle ChatGPT Application"
+APPLICATION="chatgpt desktop"
 # Try to find the window; adjust the grep command as needed
-WINDOW_ID=$(xdotool search --name "$APPLICATION")
+WINDOW_ID=$(xdotool search --class "$APPLICATION")
 
 if [ -z "$WINDOW_ID" ]; then
 	# If the application is not found, launch it
