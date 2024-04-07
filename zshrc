@@ -125,9 +125,27 @@ pgco () {
 }
 
 alias ta='tmux -u attach-session -t'
-tma () {
-  local session=$(tmux list-sessions | eval percol | awk '{print $1 }')
-  tmux -u attach-session -t $session
+
+
+tma() {
+  # List tmux sessions and use percol to select one, removing trailing colon from session names
+  local session=$(tmux list-sessions | sed 's/:.*$//' | percol | awk '{print $1}')
+ 
+  # Check if guake is installed and run it to rename the tab
+  if command -v guake >/dev/null 2>&1; then
+    guake -r "$session" 2>/dev/null || echo "Guake command failed. Is Guake running?"
+  else
+    echo "Guake not found. Skipping renaming the tab."
+  fi
+ 
+  # Check if a session was selected
+  if [ -z "$session" ]; then
+    echo "No tmux session selected."
+    return 1 # Exit the function with an error
+  fi
+  
+  # Attach to the selected tmux session
+  tmux -u attach-session -t "$session" 2>/dev/null
 }
 #############################################################################################################
 # This loads nvm
