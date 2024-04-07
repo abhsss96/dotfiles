@@ -1,0 +1,290 @@
+{
+    "schema_version": 2,
+    "timestamp": 1709788851,
+    "workspace": {
+        "0": [
+            [
+                {
+                    "panes": [
+                        {
+                            "type": "term",
+                            "directory": "/home/abhsss",
+                            "custom_colors": {
+                                "fg_color": null,
+                                "bg_color": null,
+                                "palette": null
+                            }
+                        }
+                    ],
+                    "label": "VPN",
+                    "custom_label_set": true
+                },
+                {
+                    "panes": [
+                        {
+                            "type": "term",
+                            "directory": "/home/abhsss/.local/share/tmux/resurrect",
+                            "custom_colors": {
+                                "fg_color": null,
+                                "bg_color": null,
+                                "palette": null
+                            }
+                        }
+                    ],
+                    "label": "SDP",
+                    "custom_label_set": true
+                },
+                {
+                    "panes": [
+                        {
+                            "type": "term",
+                            "directory": "/home/abhsss/Workspace/loading_dock",
+                            "custom_colors": {
+                                "fg_color": null,
+                                "bg_color": null,
+                                "palette": null
+                            }
+                        }
+                    ],
+                    "label": "ET/LD/OT",
+                    "custom_label_set": true
+                },
+                {
+                    "panes": [
+                        {
+                            "type": "term",
+                            "directory": "/home/abhsss/Workspace/loading_dock",
+                            "custom_colors": {
+                                "fg_color": null,
+                                "bg_color": null,
+                                "palette": null
+                            }
+                        }
+                    ],
+                    "label": "Allisons App",
+                    "custom_label_set": true
+                }
+            ]
+        ],
+        "2": [
+            [
+                {
+                    "panes": [
+                        {
+                            "type": "term",
+                            "directory": "/home/abhsss",
+                            "custom_colors": {
+                                "fg_color": null,
+                                "bg_color": null,
+                                "palette": null
+                            }
+                        }
+                    ],
+                    "label": "abhsss@abhsss-Inspiron-3576:~",
+                    "custom_label_set": false
+                }
+            ]
+        ],
+        "5": [
+            [
+                {
+                    "panes": [
+                        {
+                            "type": "term",
+                            "directory": "/home/abhsss",
+                            "custom_colors": {
+                                "fg_color": null,
+                                "bg_color": null,
+                                "palette": null
+                            }
+                        }
+                    ],
+                    "label": "abhsss@abhsss-Inspiron-3576:~",
+                    "custom_label_set": false
+                }
+            ]
+        ],
+        "4": [
+            [
+                {
+                    "panes": [
+                        {
+                            "type": "term",
+                            "directory": "/home/abhsss",
+                            "custom_colors": {
+                                "fg_color": null,
+                                "bg_color": null,
+                                "palette": null
+                            }
+                        }
+                    ],
+                    "label": "abhsss@abhsss-Inspiron-3576:~",
+                    "custom_label_set": false
+                }
+            ]
+        ],
+        "1": [
+            [
+                {
+                    "panes": [
+                        {
+                            "type": "term",
+                            "directory": "/home/abhsss",
+                            "custom_colors": {
+                                "fg_color": null,
+                                "bg_color": null,
+                                "palette": null
+                            }
+                        }
+                    ],
+                    "label": "abhsss@abhsss-Inspiron-3576:~",
+                    "custom_label_set": false
+                },
+                {
+                    "panes": [
+                        {
+                            "type": "term",
+                            "directory": "/home/abhsss",
+                            "custom_colors": {
+                                "fg_color": null,
+                                "bg_color": null,
+                                "palette": null
+                            }
+                        }
+                    ],
+                    "label": "abhsss@abhsss-Inspiron-3576:~",
+                    "custom_label_set": false
+                },
+                {
+                    "panes": [
+                        {
+                            "type": "term",
+                            "directory": "/home/abhsss",
+                            "custom_colors": {
+                                "fg_color": null,
+                                "bg_color": null,
+                                "palette": null
+                            }
+                        }
+                    ],
+                    "label": "abhsss@abhsss-Inspiron-3576:~",
+                    "custom_label_set": false
+                }
+            ]
+        ],
+        "7": [
+            [
+                {
+                    "panes": [
+                        {
+                            "type": "term",
+                            "directory": "/home/abhsss",
+                            "custom_colors": {
+                                "fg_color": null,
+                                "bg_color": null,
+                                "palette": null
+                            }
+                        }
+                    ],
+                    "label": "abhsss@abhsss-Inspiron-3576:~",
+                    "custom_label_set": false
+                }
+            ]
+        ],
+        "8": [
+            [
+                {
+                    "panes": [
+                        {
+                            "type": "term",
+                            "directory": "/home/abhsss",
+                            "custom_colors": {
+                                "fg_color": null,
+                                "bg_color": null,
+                                "palette": null
+                            }
+                        }
+                    ],
+                    "label": "abhsss@abhsss-Inspiron-3576:~",
+                    "custom_label_set": false
+                }
+            ]
+        ],
+        "11": [
+            [
+                {
+                    "panes": [
+                        {
+                            "type": "term",
+                            "directory": "/home/abhsss",
+                            "custom_colors": {
+                                "fg_color": null,
+                                "bg_color": null,
+                                "palette": null
+                            }
+                        }
+                    ],
+                    "label": "abhsss@abhsss-Inspiron-3576:~",
+                    "custom_label_set": false
+                }
+            ]
+        ],
+        "3": [
+            [
+                {
+                    "panes": [
+                        {
+                            "type": "term",
+                            "directory": "/home/abhsss",
+                            "custom_colors": {
+                                "fg_color": null,
+                                "bg_color": null,
+                                "palette": null
+                            }
+                        }
+                    ],
+                    "label": "abhsss@abhsss-Inspiron-3576:~",
+                    "custom_label_set": false
+                }
+            ]
+        ],
+        "6": [
+            [
+                {
+                    "panes": [
+                        {
+                            "type": "term",
+                            "directory": "/home/abhsss",
+                            "custom_colors": {
+                                "fg_color": null,
+                                "bg_color": null,
+                                "palette": null
+                            }
+                        }
+                    ],
+                    "label": "abhsss@abhsss-Inspiron-3576:~",
+                    "custom_label_set": false
+                }
+            ]
+        ],
+        "9": [
+            [
+                {
+                    "panes": [
+                        {
+                            "type": "term",
+                            "directory": "/home/abhsss",
+                            "custom_colors": {
+                                "fg_color": null,
+                                "bg_color": null,
+                                "palette": null
+                            }
+                        }
+                    ],
+                    "label": "abhsss@abhsss-Inspiron-3576:~",
+                    "custom_label_set": false
+                }
+            ]
+        ]
+    }
+}
