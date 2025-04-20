@@ -96,6 +96,7 @@ pgco () {
 
 alias ta='tmux -u attach-session -t'
 alias n="nvim ."
+alias ac="aicommits"
 tma() {
   # List tmux sessions and use percol to select one, removing trailing colon from session names
   local session=$(tmux list-sessions | sed 's/:.*$//' | percol | awk '{print $1}')
@@ -157,3 +158,4 @@ welcome_message
 . "$HOME/.asdf/asdf.sh"
 . "$HOME/.asdf/completions/asdf.bash"
 
+export PATH="$PATH:$(npm bin -g)"
