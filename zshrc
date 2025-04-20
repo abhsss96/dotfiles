@@ -42,6 +42,10 @@ export ZSH="$HOME/.oh-my-zsh"
 # Uncomment the following line if pasting URLs and other text is messed up.
 # DISABLE_MAGIC_FUNCTIONS="true"
 
+# some more ls aliases
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
 # Uncomment the following line to disable colors in ls.
 # DISABLE_LS_COLORS="true"
 
@@ -143,15 +147,26 @@ tma() {
     echo "No tmux session selected."
     return 1 # Exit the function with an error
   fi
-  
-  # Attach to the selected tmux session
-  tmux -u attach-session -t "$session" 2>/dev/null
+# Check if currently inside a tmux session
+  if [ -n "$TMUX" ]; then
+    # Switch to the selected session
+    tmux switch-client -t "$session" 2>/dev/null
+  else
+    # Attach to the selected session if not already in tmux
+    tmux -u attach-session -t "$session" 2>/dev/null
+  fi
+
+  # Check if the switch/attach failed and provide feedback
+  if [ $? -ne 0 ]; then
+    echo "Failed to switch or attach to the tmux session: $session"
+    return 1
+  fi
 }
 #############################################################################################################
 # This loads nvm
 
 # print "Welcome to Abhishek's environment"
-CREDENTIALS_FILE=~/.dotfiles/zsh/credentials.sh
+CREDENTIALS_FILE=~/dotfiles/zsh/credentials.sh
 if [ -f "$CREDENTIALS_FILE" ]; then
   source "$CREDENTIALS_FILE"
 # else
@@ -165,3 +180,28 @@ eval "$(direnv hook zsh)"
 # cat "/home/abhsss/Downloads/banner (1).txt"
 
 ZSH_HIGHLIGHT_STYLES[cursor]='fg=#ffffff'
+
+
+
+# Welcome message with date and time
+function welcome_message {
+  local cyan="\e[1;36m"
+  local yellow="\e[1;33m"
+  local green="\e[1;32m"
+  local reset="\e[0m"
+
+  echo "${cyan}==================================================="
+  echo "${yellow}     Welcome to Abhishek's shell environment! ${reset}"
+  echo "${cyan}==================================================="
+  echo "${green}  !!! $(date) !!!${reset}"
+  echo "${cyan}==================================================="
+}
+
+# Call the function
+welcome_message
+
+# Generated for envman. Do not edit.
+[ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
+. "$HOME/.asdf/asdf.sh"
+. "$HOME/.asdf/completions/asdf.bash"
+

@@ -1,0 +1,20 @@
+-- return {
+--   -- Other plugins...
+--
+--   "epwalsh/obsidian.nvim",
+--   lazy = true, -- Only load when needed
+--   event = { "BufReadPre path/to/vault/**.md" }, -- Load for Obsidian notes
+--   dependencies = { "nvim-lua/plenary.nvim" }, -- Required dependency
+--   config = function()
+--     require("obsidian").setup({
+--       dir = "~/Documents/SD", -- Replace with your vault path
+--       daily_notes = {
+--         folder = "Daily", -- Folder for daily notes
+--         date_format = "%Y-%m-%d", -- Format for daily notes
+--       },
+--       completion = {
+--         nvim_cmp = true, -- Enable completion with nvim-cmp
+--       },
+--     })
+--   end,
+-- }
