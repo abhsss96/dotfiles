@@ -60,6 +60,9 @@ else
   vim.api.nvim_set_keymap("n", "<A-Right>", "<C-w>l", { noremap = true })
 end
 
+-- Ctrl+a to mark all text
+vim.api.nvim_set_keymap("n", "<C-a>", "ggVG", { noremap = true, silent = true })
+
 -- Normal mode mappings
 vim.api.nvim_set_keymap("n", "<S-Up>", "v<Up>", opts)
 vim.api.nvim_set_keymap("n", "<S-Down>", "v<Down>", opts)
@@ -91,3 +94,24 @@ vim.api.nvim_set_keymap("n", ";", ":", { noremap = true })
 local builtin = require("telescope.builtin")
 vim.keymap.set("n", "<C-p>", builtin.find_files, {})
 vim.keymap.set("n", "<C-f>", builtin.live_grep, {})
+
+-- Launch panel if nothing is typed after <leader>z
+vim.keymap.set("n", "<leader>j", "<cmd>Telekasten panel<CR>")
+
+-- Most used functions
+vim.keymap.set("n", "<leader>jf", "<cmd>Telekasten find_notes<CR>")
+vim.keymap.set("n", "<leader>jg", "<cmd>Telekasten search_notes<CR>")
+vim.keymap.set("n", "<leader>jd", "<cmd>Telekasten goto_today<CR>")
+vim.keymap.set("n", "<leader>jz", "<cmd>Telekasten follow_link<CR>")
+vim.keymap.set("n", "<leader>jn", "<cmd>Telekasten new_note<CR>")
+vim.keymap.set("n", "<leader>jc", "<cmd>Telekasten show_calendar<CR>")
+vim.keymap.set("n", "<leader>jb", "<cmd>Telekasten show_backlinks<CR>")
+vim.keymap.set("n", "<leader>jI", "<cmd>Telekasten insert_img_link<CR>")
+
+-- Call insert link automatically when we start typing a link
+vim.keymap.set("i", "[[", "<cmd>Telekasten insert_link<CR>")
+
+vim.keymap.set("n", "<leader>oo", "<cmd>ObsidianOpen<CR>", { desc = "Open Obsidian" })
+vim.keymap.set("n", "<leader>od", "<cmd>ObsidianToday<CR>", { desc = "Open today's note" })
+vim.keymap.set("n", "<leader>on", "<cmd>ObsidianNew<CR>", { desc = "Create new note" })
+vim.keymap.set("n", "<leader>os", "<cmd>ObsidianSearch<CR>", { desc = "Search Obsidian notes" })
