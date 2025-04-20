@@ -96,7 +96,6 @@ pgco () {
 
 alias ta='tmux -u attach-session -t'
 alias n="nvim ."
-
 tma() {
   # List tmux sessions and use percol to select one, removing trailing colon from session names
   local session=$(tmux list-sessions | sed 's/:.*$//' | percol | awk '{print $1}')
@@ -104,31 +103,18 @@ tma() {
   # Check if guake is installed and run it to rename the tab
   if command -v guake >/dev/null 2>&1; then
     guake -r "$session" 2>/dev/null || echo "Guake command failed. Is Guake running?"
-  else
-    echo "Guake not found. Skipping renaming the tab."
+  # else
+  #   echo "Guake not found. Skipping renaming the tab."
   fi
  
   # Check if a session was selected
   if [ -z "$session" ]; then
     echo "No tmux session selected."
-    return 1 # Exit the function with an error
-  fi
-# Check if currently inside a tmux session
-  if [ -n "$TMUX" ]; then
-    # Switch to the selected session
-    tmux switch-client -t "$session" 2>/dev/null
-  else
-    # Attach to the selected session if not already in tmux
-    tmux -u attach-session -t "$session" 2>/dev/null
-  fi
-
-  # Check if the switch/attach failed and provide feedback
-  if [ $? -ne 0 ]; then
-    echo "Failed to switch or attach to the tmux session: $session"
     return 1
   fi
+  # Attach to the selected tmux session, even if already in a session
+  tmux switch-client -t "$session" || tmux -u attach-session -t "$session"
 }
-
 # Load credentials
 CREDENTIALS_FILE=~/dotfiles/zsh/credentials.sh
 if [ -f "$CREDENTIALS_FILE" ]; then
