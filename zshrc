@@ -92,6 +92,7 @@ pgco () {
 
 alias ta='tmux -u attach-session -t'
 alias n="nvim ."
+alias ac="aicommits"
 tma() {
   # List tmux sessions and use percol to select one, removing trailing colon from session names
   local session=$(tmux list-sessions | sed 's/:.*$//' | percol | awk '{print $1}')
@@ -129,3 +130,4 @@ eval "$(direnv hook zsh)"
 export DISABLE_SPRING=true
 ZSH_HIGHLIGHT_STYLES[cursor]='fg=#ffffff'
 
+export PATH="$PATH:$(npm bin -g)"
