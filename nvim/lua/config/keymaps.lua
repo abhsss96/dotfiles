@@ -85,9 +85,9 @@ vim.api.nvim_set_keymap("i", "<S-Right>", "<Esc>v<Right>", opts)
 vim.api.nvim_set_keymap("i", "<C-v>", "<Esc>pi", opts)
 
 -- All modes mapping
-vim.api.nvim_set_keymap("", "<C-v>", "pi", opts)
+vim.api.nvim_set_keymap("", "<D-v>", "pi", opts)
 
-vim.api.nvim_set_keymap("n", "<C-n>", ":enew<CR>", opts)
+vim.api.nvim_set_keymap("n", "<D-n>", ":enew<CR>", opts)
 
 vim.api.nvim_set_keymap("n", ";", ":", { noremap = true })
 

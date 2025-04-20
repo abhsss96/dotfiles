@@ -56,21 +56,11 @@ require("lazy").setup({
     },
   },
 })
-
 -- Enable ERB folding
 vim.cmd([[
   autocmd FileType eruby setlocal foldmethod=indent
+  autocmd FileType ruby setlocal foldmethod=syntax
 ]])
-
 require("telekasten").setup({
-  home = vim.fn.expand("~/Notes"), -- Put the name of your notes directory here
-  extension = "", -- Set this to an empty string to prevent appending `.md`
-  media_extension = { "png", "jpg" }, -- Optional: define image extensions
-  take_over_my_home = false,
-  auto_set_filetype = false,
-  find_command = "rg --files --glob '*.rb' --glob '*.md' --glob '*.txt' --glob '*.json'", -- Include extensions
-  -- Allow searching through specific extensions
-  search_scope = {
-    file_extensions = { "rb", "md", "txt", "json" }, -- Add extensions you want to include
-  },
+  home = vim.fn.expand("~/Documents/Notes"), -- Put the name of your notes directory here
 })

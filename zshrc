@@ -6,29 +6,18 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
     source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+# Theme configuration
 ZSH_THEME="powerlevel10k/powerlevel10k"
-# ZSH_THEME="dracula".
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
-# Path to your oh-my-zsh installation.
-export ZSH="$HOME/.oh-my-zsh"
-# Set name of the theme to load --- if set to "random", it will
-# load a random theme each time oh-my-zsh is loaded, in which case,
-# to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
+# ZSH_THEME="dracula"
 # ZSH_THEME="nebirhos"
 
-# Set list of themes to pick from when loading at random
-# Setting this variable when ZSH_THEME=random will cause zsh to load
-# a theme from this variable instead of looking in $ZSH/themes/
-# If set to an empty array, this variable will have no effect.
-# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
+# Oh-my-zsh installation path
+export ZSH="$HOME/.oh-my-zsh"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
 
 # Uncomment the following line to use hyphen-insensitive completion.
-# Case-sensitive completion must be off. _ and - will be interchangeable.
 # HYPHEN_INSENSITIVE="true"
 
 # Uncomment one of the following lines to change the auto-update behavior
@@ -56,55 +45,38 @@ alias l='ls -CF'
 # ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
-# You can also set it to another string to have that shown instead of the default red dots.
-# e.g. COMPLETION_WAITING_DOTS="%F{yellow}waiting...%f"
-# Caution: this setting can cause issues with multiline prompts in zsh < 5.7.1 (see #5765)
 # COMPLETION_WAITING_DOTS="true"
 
 # Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
+# under VCS as dirty.
 # DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # Uncomment the following line if you want to change the command execution time
 # stamp shown in the history command output.
-# You can set one of the optional three formats:
-# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# or set a custom format using the strftime function format specifications,
-# see 'man strftime' for details.
 # HIST_STAMPS="mm/dd/yyyy"
 
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
-
-# Which plugins would you like to load?
-# Standard plugins can be found in $ZSH/plugins/
-# Custom plugins may be added to $ZSH_CUSTOM/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
+# Plugin configuration
 plugins=(
-        git
-        asdf
-        ruby
-        rails
-        yarn
-        bundler
-        zsh-autosuggestions
-        zsh-syntax-highlighting
-        docker
-        colorize
-        colored-man-pages
-        tmux
-        timewarrior
-        )
+    git
+    asdf
+    ruby
+    rails
+    yarn
+    bundler
+    zsh-autosuggestions
+    zsh-syntax-highlighting
+    docker
+    colorize
+    colored-man-pages
+    tmux
+)
 
+# Load oh-my-zsh
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
-# export MANPATH="/usr/local/man:$MANPATH"
-
-# You may need to manually set your language environment
+# Uncomment to set your language environment
 # export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
@@ -117,19 +89,13 @@ source $ZSH/oh-my-zsh.sh
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
+# Aliases
 pgco () {
   git checkout $(git branch | eval percol) 
 }
 
 alias ta='tmux -u attach-session -t'
-
+alias n="nvim ."
 
 tma() {
   # List tmux sessions and use percol to select one, removing trailing colon from session names
@@ -162,23 +128,23 @@ tma() {
     return 1
   fi
 }
-#############################################################################################################
-# This loads nvm
 
-# print "Welcome to Abhishek's environment"
+# Load credentials
 CREDENTIALS_FILE=~/dotfiles/zsh/credentials.sh
 if [ -f "$CREDENTIALS_FILE" ]; then
   source "$CREDENTIALS_FILE"
-# else
-#   echo "Warning: The credentials file ($CREDENTIALS_FILE) does not exist."
+else
+  echo "Warning: The credentials file ($CREDENTIALS_FILE) does not exist."
 fi
-# source $HOME/.oh-my-zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.sh
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+
+# Load Powerlevel10k configuration
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
+# Load direnv
 eval "$(direnv hook zsh)"
-# cat "/home/abhsss/Downloads/banner (1).txt"
 
+# Environment settings
+export DISABLE_SPRING=true
 ZSH_HIGHLIGHT_STYLES[cursor]='fg=#ffffff'
 
 
