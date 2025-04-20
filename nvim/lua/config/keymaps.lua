@@ -82,12 +82,34 @@ vim.api.nvim_set_keymap("i", "<S-Right>", "<Esc>v<Right>", opts)
 vim.api.nvim_set_keymap("i", "<C-v>", "<Esc>pi", opts)
 
 -- All modes mapping
-vim.api.nvim_set_keymap("", "<C-v>", "pi", opts)
+vim.api.nvim_set_keymap("", "<D-v>", "pi", opts)
 
-vim.api.nvim_set_keymap("n", "<C-n>", ":enew<CR>", opts)
+vim.api.nvim_set_keymap("n", "<D-n>", ":enew<CR>", opts)
 
 vim.api.nvim_set_keymap("n", ";", ":", { noremap = true })
 
 local builtin = require("telescope.builtin")
 vim.keymap.set("n", "<C-p>", builtin.find_files, {})
 vim.keymap.set("n", "<C-f>", builtin.live_grep, {})
+
+-- Launch panel if nothing is typed after <leader>z
+vim.keymap.set("n", "<leader>jf", "<cmd>Telekasten panel<CR>")
+
+-- Most used functions
+vim.keymap.set("n", "<leader>zf", "<cmd>Telekasten find_notes<CR>")
+vim.keymap.set("n", "<leader>zg", "<cmd>Telekasten search_notes<CR>")
+vim.keymap.set("n", "<leader>zd", "<cmd>Telekasten goto_today<CR>")
+vim.keymap.set("n", "<leader>zz", "<cmd>Telekasten follow_link<CR>")
+vim.keymap.set("n", "<leader>zn", "<cmd>Telekasten new_note<CR>")
+vim.keymap.set("n", "<leader>zc", "<cmd>Telekasten show_calendar<CR>")
+vim.keymap.set("n", "<leader>zb", "<cmd>Telekasten show_backlinks<CR>")
+vim.keymap.set("n", "<leader>zI", "<cmd>Telekasten insert_img_link<CR>")
+-- Faster scrolling with Shift + arrow keys
+-- vim.api.nvim_st_keymap("n", "<S-Up>", "5k", { noremap = true, silent = true })
+-- vim.api.nvim_set_keymap("n", "<S-Down>", "5j", { noremap = true, silent = true })
+
+-- Page Up and Page Down with Ctrl + Shift + arrow keys
+vim.api.nvim_set_keymap("n", "<C-S-Up>", "<PageUp>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<C-S-Down>", "<PageDown>", { noremap = true, silent = true })
+-- Call insert link automatically when we start typing a link
+vim.keymap.set("i", "[[", "<cmd>Telekasten insert_link<CR>")
