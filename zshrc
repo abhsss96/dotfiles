@@ -31,10 +31,6 @@ export ZSH="$HOME/.oh-my-zsh"
 # Uncomment the following line if pasting URLs and other text is messed up.
 # DISABLE_MAGIC_FUNCTIONS="true"
 
-# some more ls aliases
-alias ll='ls -alF'
-alias la='ls -A'
-alias l='ls -CF'
 # Uncomment the following line to disable colors in ls.
 # DISABLE_LS_COLORS="true"
 
@@ -58,7 +54,6 @@ alias l='ls -CF'
 # Plugin configuration
 plugins=(
     git
-    asdf
     ruby
     rails
     yarn
@@ -89,40 +84,21 @@ source $ZSH/oh-my-zsh.sh
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
-# Aliases
-pgco () {
-  git checkout $(git branch | eval percol) 
-}
+# Load credentials and other configurations
+FILES_TO_SOURCE=(
+  ~/dotfiles/zsh/aliases.sh
+  ~/dotfiles/zsh/welcome.sh
+  ~/dotfiles/zsh/ai.sh
+  ~/dotfiles/zsh/credentials.sh
+)
 
-alias ta='tmux -u attach-session -t'
-alias n="nvim ."
-alias ac="aicommits"
-tma() {
-  # List tmux sessions and use percol to select one, removing trailing colon from session names
-  local session=$(tmux list-sessions | sed 's/:.*$//' | percol | awk '{print $1}')
- 
-  # Check if guake is installed and run it to rename the tab
-  if command -v guake >/dev/null 2>&1; then
-    guake -r "$session" 2>/dev/null || echo "Guake command failed. Is Guake running?"
-  # else
-  #   echo "Guake not found. Skipping renaming the tab."
+for FILE in "${FILES_TO_SOURCE[@]}"; do
+  if [ -f "$FILE" ]; then
+    source "$FILE"
+  else
+    echo "Warning: The file ($FILE) does not exist."
   fi
- 
-  # Check if a session was selected
-  if [ -z "$session" ]; then
-    echo "No tmux session selected."
-    return 1
-  fi
-  # Attach to the selected tmux session, even if already in a session
-  tmux switch-client -t "$session" || tmux -u attach-session -t "$session"
-}
-# Load credentials
-CREDENTIALS_FILE=~/dotfiles/zsh/credentials.sh
-if [ -f "$CREDENTIALS_FILE" ]; then
-  source "$CREDENTIALS_FILE"
-else
-  echo "Warning: The credentials file ($CREDENTIALS_FILE) does not exist."
-fi
+done
 
 # Load Powerlevel10k configuration
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
@@ -134,28 +110,10 @@ eval "$(direnv hook zsh)"
 export DISABLE_SPRING=true
 ZSH_HIGHLIGHT_STYLES[cursor]='fg=#ffffff'
 
-
-
-# Welcome message with date and time
-function welcome_message {
-  local cyan="\e[1;36m"
-  local yellow="\e[1;33m"
-  local green="\e[1;32m"
-  local reset="\e[0m"
-
-  echo "${cyan}==================================================="
-  echo "${yellow}     Welcome to Abhishek's shell environment! ${reset}"
-  echo "${cyan}==================================================="
-  echo "${green}  !!! $(date) !!!${reset}"
-  echo "${cyan}==================================================="
-}
-
-# Call the function
-welcome_message
-
 # Generated for envman. Do not edit.
 [ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
 . "$HOME/.asdf/asdf.sh"
-. "$HOME/.asdf/completions/asdf.bash"
 
 export PATH="$PATH:$(npm bin -g)"
+
+export PATH="$HOME/.global-node-tools/node_modules/.bin:$PATH"

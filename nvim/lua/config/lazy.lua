@@ -16,7 +16,6 @@ require("lazy").setup({
     { import = "lazyvim.plugins.extras.ui.mini-animate" },
     { import = "lazyvim.plugins.extras.formatting.prettier" },
     -- import/override with your plugins
-    { import = "plugins" },
     -- Add ERB and Ruby related plugins
     { "vim-ruby/vim-ruby", ft = { "ruby", "eruby" } },
     { "tpope/vim-rails", ft = { "ruby", "eruby" } },
@@ -28,6 +27,7 @@ require("lazy").setup({
     { "HerringtonDarkholme/yats.vim", ft = { "typescript", "eruby" } },
     -- Add generic folding support
     { "tmhedberg/SimpylFold", ft = { "eruby", "ruby" } },
+    { import = "plugins" },
   },
   defaults = {
     -- By default, only LazyVim plugins will be lazy-loaded. Your custom plugins will load during startup.
