@@ -1,84 +1,82 @@
-# some more ls aliases
-alias ll='ls -alF'
-alias la='ls -A'
-alias l='ls -CF'
-alias c='chatgpt'
+# Aliases for ls command with different options
+alias ll='ls -alF' # List all files in long format, including hidden files, with type indicators
+alias la='ls -A'   # List all files except '.' and '..'
+alias l='ls -CF'   # List files in columns, with type indicators
+alias c='chatgpt'  # Alias for chatgpt command
 
-# Aliases
+# Git checkout using percol for branch selection
 pgco() {
-  git checkout $(git branch | eval percol)
+  git checkout $(git branch | eval percol) # Use percol to select a branch and checkout
 }
 
-alias ta='tmux -u attach-session -t'
+# Alias for attaching to a tmux session
+alias ta='tmux -u attach-session -t' # Attach to a tmux session with UTF-8 support
+
+# Alias for opening Neovim in the current directory
 alias n="nvim ."
+
+# Function to attach to a tmux session using percol for session selection
 tma() {
-  # List tmux sessions and use percol to select one, removing trailing colon from session names
   echo "Listing tmux sessions..."
   local session=$(tmux list-sessions | sed 's/:.*$//' | percol | awk '{print $1}')
   echo "Selected session: $session"
 
-  # Check if guake is installed and run it to rename the tab
   echo "Checking if guake is installed..."
   if command -v guake >/dev/null 2>&1; then
     echo "Guake is installed. Renaming tab..."
     guake -r "$session" 2>/dev/null || echo "Guake command failed. Is Guake running?"
   fi
 
-  # Check if a session was selected
   echo "Checking if a session was selected..."
   if [ -z "$session" ]; then
     echo "No tmux session selected."
     return 1
   fi
 
-  # Check if inside a tmux session
   if [ -n "$TMUX" ]; then
-    # Inside tmux, switch client
     echo "Attaching to tmux session: $session"
     tmux switch-client -t "$session"
   else
-    # Outside tmux, attach to session
     echo "Attaching to tmux session: $session"
     tmux -u attach-session -t "$session"
   fi
 }
 
+# Alias for editing the gh-dash configuration file
 alias gdc="nvim ~/.config/gh-dash/config.yml"
+
+# Function to manage gh-dash configuration and launch gh dash
 gdash() {
   CONFIG_FILE="$HOME/.config/gh-dash/config.yml"
   CURRENT_DIR=$(pwd)
-
   CURRENT_FOLDER=$(basename "$PWD")
 
-  # Ensure config file exists
   mkdir -p "$(dirname "$CONFIG_FILE")"
   touch "$CONFIG_FILE"
 
-  # Check if repoPaths exists, if not, initialize it
-  if ! grep -q "repoPaths:" "$CONFIG_FILEILE"; then
+  if ! grep -q "repoPaths:" "$CONFIG_FILE"; then
     echo -e "  annkissam/$CURRENT_FOLDER: $CURRENT_DIR" >>"$CONFIG_FILE"
     echo "Initialized repoPaths with current directory."
   else
-    # Check if current directory is already listed
     if ! grep -q "  - $CURRENT_DIR" "$CONFIG_FILE"; then
       echo "annkissam/$CURRENT_FOLDER: $CURRENT_DIR" >>"$CONFIG_FILE"
       echo "Added $CURRENT_DIR to repoPaths."
     fi
   fi
 
-  # Launch gh dash
   gh dash
 }
 
+# Alias for checking out the latest pull request and opening lazygit
 alias ghr='gh pr checkout $(gh pr list --limit 1 --json number -q ".[0].number") && lazygit'
 
+# Function to open a pull request review dashboard in tmux
 pr_review_dashboard() {
   if [ -n "$TMUX" ]; then
-    # You're inside tmux, so split panes
     tmux split-window -v -p 40 "lazygit"
     tmux select-pane -U
     clear
-    gh dash
+    gdash
   else
     echo "Not in a tmux session. Starting tmux..."
     tmux new-session \; send-keys 'gh dash' C-m \; split-window -v -p 40 'lazygit'
