@@ -87,6 +87,7 @@ source $ZSH/oh-my-zsh.sh
 
 # Load credentials and other configurations
 FILES_TO_SOURCE=(
+  ~/dotfiles/zsh/time_tracking.sh
   ~/dotfiles/zsh/aliases.sh
   ~/dotfiles/zsh/welcome.sh
   ~/dotfiles/zsh/ai.sh
@@ -118,3 +119,5 @@ ZSH_HIGHLIGHT_STYLES[cursor]='fg=#ffffff'
 export PATH="$PATH:$(npm bin -g)"
 
 export PATH="$HOME/.global-node-tools/node_modules/.bin:$PATH"
+
+
