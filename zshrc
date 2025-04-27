@@ -56,6 +56,7 @@ plugins=(
     git
     ruby
     rails
+    elixir
     yarn
     bundler
     zsh-autosuggestions

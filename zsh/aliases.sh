@@ -58,27 +58,30 @@ gdash() {
     echo -e "  annkissam/$CURRENT_FOLDER: $CURRENT_DIR" >>"$CONFIG_FILE"
     echo "Initialized repoPaths with current directory."
   else
-    if ! grep -q "  - $CURRENT_DIR" "$CONFIG_FILE"; then
-      echo "annkissam/$CURRENT_FOLDER: $CURRENT_DIR" >>"$CONFIG_FILE"
-      echo "Added $CURRENT_DIR to repoPaths."
+    if ! grep -q "  annkissam/$CURRENT_FOLDER:" "$CONFIG_FILE"; then
+      if ! grep -q "  - $CURRENT_DIR" "$CONFIG_FILE"; then
+        echo "  annkissam/$CURRENT_FOLDER: $CURRENT_DIR" >>"$CONFIG_FILE"
+        echo "Added $CURRENT_DIR to repoPaths."
+      fi
     fi
   fi
 
   gh dash
 }
-
 # Alias for checking out the latest pull request and opening lazygit
 alias ghr='gh pr checkout $(gh pr list --limit 1 --json number -q ".[0].number") && lazygit'
 
 # Function to open a pull request review dashboard in tmux
 pr_review_dashboard() {
   if [ -n "$TMUX" ]; then
-    tmux split-window -v -p 40 "lazygit"
+    tmux split-window -h -p 50 "lazygit"
     tmux select-pane -U
     clear
     gdash
   else
     echo "Not in a tmux session. Starting tmux..."
-    tmux new-session \; send-keys 'gh dash' C-m \; split-window -v -p 40 'lazygit'
+    tmux new-session \; send-keys 'gdash' C-m \; split-window -v -p 50 'lazygit'
   fi
 }
+
+alias prd="pr_review_dashboard"
