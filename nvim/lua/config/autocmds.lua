@@ -26,3 +26,9 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.opt_local.foldmethod = "indent"
   end,
 })
+vim.api.nvim_create_autocmd("BufRead,BufNewFile", {
+  pattern = "*.rb",
+  callback = function()
+    vim.opt_local.foldmethod = "indent"
+  end,
+})
