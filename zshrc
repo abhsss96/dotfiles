@@ -131,3 +131,4 @@ export DISABLE_SPRING=true
 ZSH_HIGHLIGHT_STYLES[cursor]='fg=#ffffff'
 
 export PATH="$PATH:$(npm bin -g)"
+export PATH="$HOME/.local/bin:$PATH"
