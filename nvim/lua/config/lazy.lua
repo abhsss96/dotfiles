@@ -52,6 +52,3 @@ require("lazy").setup({
   },
 })
 -- ERB configuration is handled in plugins/ruby.lua and config/autocmds.lua
-require("telekasten").setup({
-  home = vim.fn.expand("~/Documents/Notes"), -- Put the name of your notes directory here
-})
