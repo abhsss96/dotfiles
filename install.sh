@@ -20,17 +20,25 @@ echo -e "  └──────────────────────
 echo ""
 
 # ── Symlinks ──────────────────────────────────────────────────────────────────
+# Safe symlink: removes existing symlink/dir before creating to avoid circular links
+safe_link() {
+  local src="$1" dst="$2"
+  [[ -L "$dst" ]] && rm "$dst"
+  [[ -d "$dst" && ! -L "$dst" ]] && rm -rf "$dst"
+  ln -s "$src" "$dst"
+}
+
 info "Symlinking zshrc..."
-ln -sf "$DOTFILES/zshrc" "$HOME/.zshrc"
+safe_link "$DOTFILES/zshrc" "$HOME/.zshrc"
 success "~/.zshrc linked"
 
 info "Symlinking nvim config..."
 mkdir -p "$HOME/.config"
-ln -sf "$DOTFILES/nvim" "$HOME/.config/nvim"
+safe_link "$DOTFILES/nvim" "$HOME/.config/nvim"
 success "~/.config/nvim linked"
 
 info "Symlinking tmux config..."
-ln -sf "$DOTFILES/tmux.conf" "$HOME/.tmux.conf"
+safe_link "$DOTFILES/tmux.conf" "$HOME/.tmux.conf"
 success "~/.tmux.conf linked"
 
 # ── oh-my-zsh ─────────────────────────────────────────────────────────────────
