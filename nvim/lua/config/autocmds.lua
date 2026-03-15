@@ -2,6 +2,16 @@
 -- Default autocmds that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/autocmds.lua
 -- Add any additional autocmds here
 --
+
+-- Load editor keymaps and mason-fix after plugins are ready
+vim.api.nvim_create_autocmd("User", {
+  pattern = "VeryLazy",
+  once = true,
+  callback = function()
+    require("config.editor").setup()
+    require("config.mason-fix")
+  end,
+})
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "haml",
   callback = function()
