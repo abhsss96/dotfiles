@@ -1,87 +1,94 @@
-# Aliases for ls command with different options
-alias ll='ls -alF' # List all files in long format, including hidden files, with type indicators
-alias la='ls -A'   # List all files except '.' and '..'
-alias l='ls -CF'   # List files in columns, with type indicators
-alias c='chatgpt'  # Alias for chatgpt command
+# ── Navigation ────────────────────────────────────────────────────────────────
 
-# Git checkout using percol for branch selection
+# Use eza if available, fallback to ls
+if command -v eza &>/dev/null; then
+  alias ls='eza --icons --group-directories-first'
+  alias ll='eza -alF --icons --group-directories-first --git'
+  alias la='eza -a --icons --group-directories-first'
+  alias l='eza -F --icons'
+  alias lt='eza --tree --icons --level=2'
+else
+  alias ll='ls -alF'
+  alias la='ls -A'
+  alias l='ls -CF'
+fi
+
+# ── Editor ─────────────────────────────────────────────────────────────────────
+alias vim='nvim'
+alias n='nvim .'
+
+# ── Git ────────────────────────────────────────────────────────────────────────
+
+# Git checkout using fzf (falls back to percol if fzf not available)
 pgco() {
-  git checkout $(git branch | eval percol) # Use percol to select a branch and checkout
+  if command -v fzf &>/dev/null; then
+    git checkout $(git branch | fzf)
+  elif command -v percol &>/dev/null; then
+    git checkout $(git branch | percol)
+  else
+    echo "Install fzf or percol for interactive branch selection."
+  fi
 }
 
-# Alias for attaching to a tmux session
-alias ta='tmux -u attach-session -t' # Attach to a tmux session with UTF-8 support
+# Checkout latest PR and open lazygit
+alias ghr='gh pr checkout $(gh pr list --limit 1 --json number -q ".[0].number") && lazygit'
 
-# Alias for opening Neovim in the current directory
-alias n="nvim ."
+# ── Tmux ───────────────────────────────────────────────────────────────────────
+alias ta='tmux -u attach-session -t'
 
-# Function to attach to a tmux session using percol for session selection
+# Attach to a tmux session interactively
 tma() {
-  echo "Listing tmux sessions..."
-  local session=$(tmux list-sessions | sed 's/:.*$//' | percol | awk '{print $1}')
-  echo "Selected session: $session"
-
-  echo "Checking if guake is installed..."
-  if command -v guake >/dev/null 2>&1; then
-    echo "Guake is installed. Renaming tab..."
-    guake -r "$session" 2>/dev/null || echo "Guake command failed. Is Guake running?"
-  fi
-
-  echo "Checking if a session was selected..."
-  if [ -z "$session" ]; then
-    echo "No tmux session selected."
+  local session
+  if command -v fzf &>/dev/null; then
+    session=$(tmux list-sessions 2>/dev/null | sed 's/:.*$//' | fzf)
+  elif command -v percol &>/dev/null; then
+    session=$(tmux list-sessions 2>/dev/null | sed 's/:.*$//' | percol | awk '{print $1}')
+  else
+    echo "Install fzf for interactive session selection."
     return 1
   fi
 
-  if [ -n "$TMUX" ]; then
-    echo "Attaching to tmux session: $session"
+  [[ -z "$session" ]] && return 1
+
+  if [[ -n "$TMUX" ]]; then
     tmux switch-client -t "$session"
   else
-    echo "Attaching to tmux session: $session"
     tmux -u attach-session -t "$session"
   fi
 }
 
-# Alias for editing the gh-dash configuration file
-alias gdc="nvim ~/.config/gh-dash/config.yml"
+# ── GitHub Dash ────────────────────────────────────────────────────────────────
+alias gdc='nvim ~/.config/gh-dash/config.yml'
 
-# Function to manage gh-dash configuration and launch gh dash
 gdash() {
-  CONFIG_FILE="$HOME/.config/gh-dash/config.yml"
-  CURRENT_DIR=$(pwd)
-  CURRENT_FOLDER=$(basename "$PWD")
+  local config="$HOME/.config/gh-dash/config.yml"
+  local folder=$(basename "$PWD")
 
-  mkdir -p "$(dirname "$CONFIG_FILE")"
-  touch "$CONFIG_FILE"
+  mkdir -p "$(dirname "$config")"
+  touch "$config"
 
-  if ! grep -q "repoPaths:" "$CONFIG_FILE"; then
-    echo -e "  annkissam/$CURRENT_FOLDER: $CURRENT_DIR" >>"$CONFIG_FILE"
-    echo "Initialized repoPaths with current directory."
-  else
-    if ! grep -q "  annkissam/$CURRENT_FOLDER:" "$CONFIG_FILE"; then
-      if ! grep -q "  - $CURRENT_DIR" "$CONFIG_FILE"; then
-        echo "  annkissam/$CURRENT_FOLDER: $CURRENT_DIR" >>"$CONFIG_FILE"
-        echo "Added $CURRENT_DIR to repoPaths."
-      fi
-    fi
+  if ! grep -q "repoPaths:" "$config"; then
+    echo "  annkissam/$folder: $PWD" >>"$config"
+  elif ! grep -q "annkissam/$folder:" "$config"; then
+    echo "  annkissam/$folder: $PWD" >>"$config"
   fi
 
   gh dash
 }
-# Alias for checking out the latest pull request and opening lazygit
-alias ghr='gh pr checkout $(gh pr list --limit 1 --json number -q ".[0].number") && lazygit'
 
-# Function to open a pull request review dashboard in tmux
+# PR review dashboard in tmux
 pr_review_dashboard() {
-  if [ -n "$TMUX" ]; then
+  if [[ -n "$TMUX" ]]; then
     tmux split-window -h -p 50 "lazygit"
     tmux select-pane -U
     clear
     gdash
   else
-    echo "Not in a tmux session. Starting tmux..."
     tmux new-session \; send-keys 'gdash' C-m \; split-window -v -p 50 'lazygit'
   fi
 }
 
-alias prd="pr_review_dashboard"
+alias prd='pr_review_dashboard'
+
+# ── AI ─────────────────────────────────────────────────────────────────────────
+alias c='chatgpt'
