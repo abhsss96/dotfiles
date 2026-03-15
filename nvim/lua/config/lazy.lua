@@ -20,13 +20,8 @@ require("lazy").setup({
     { "vim-ruby/vim-ruby", ft = { "ruby", "eruby" } },
     { "tpope/vim-rails", ft = { "ruby", "eruby" } },
     { "tpope/vim-endwise", ft = { "ruby", "eruby" } },
-    { "tpope/vim-surround", ft = { "ruby", "eruby" } },
+    { "tpope/vim-surround" },
     { "othree/html5.vim", ft = { "html", "eruby" } },
-    { "pangloss/vim-javascript", ft = { "javascript", "eruby" } },
-    { "leafgarland/typescript-vim", ft = { "typescript", "eruby" } },
-    { "HerringtonDarkholme/yats.vim", ft = { "typescript", "eruby" } },
-    -- Add generic folding support
-    { "tmhedberg/SimpylFold", ft = { "eruby", "ruby" } },
     { import = "plugins" },
   },
   defaults = {
@@ -56,11 +51,7 @@ require("lazy").setup({
     },
   },
 })
--- Enable ERB folding
-vim.cmd([[
-  autocmd FileType eruby setlocal foldmethod=indent
-  autocmd FileType ruby setlocal foldmethod=syntax
-]])
+-- ERB configuration is handled in plugins/ruby.lua and config/autocmds.lua
 require("telekasten").setup({
   home = vim.fn.expand("~/Documents/Notes"), -- Put the name of your notes directory here
 })

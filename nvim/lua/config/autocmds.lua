@@ -21,14 +21,22 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 vim.api.nvim_create_autocmd("FileType", {
-  pattern = "erb",
+  pattern = "eruby",
   callback = function()
     vim.opt_local.foldmethod = "indent"
+    -- Ensure syntax highlighting is enabled for ERB
+    vim.cmd('syntax enable')
   end,
 })
-vim.api.nvim_create_autocmd("BufRead,BufNewFile", {
-  pattern = "*.rb",
-  callback = function()
-    vim.opt_local.foldmethod = "indent"
+
+-- Ensure Solargraph LSP works with ERB files
+vim.api.nvim_create_autocmd("LspAttach", {
+  group = vim.api.nvim_create_augroup("ErubyLsp", { clear = true }),
+  callback = function(args)
+    local client = vim.lsp.get_client_by_id(args.data.client_id)
+    if client and client.name == "solargraph" then
+      -- Solargraph should work with eruby files since we've set the filetype correctly
+      -- The filetype detection in ruby.lua ensures .erb files are recognized as eruby
+    end
   end,
 })

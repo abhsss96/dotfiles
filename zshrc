@@ -87,7 +87,7 @@ source $ZSH/oh-my-zsh.sh
 
 # Load credentials and other configurations
 FILES_TO_SOURCE=(
-  ~/dotfiles/zsh/time_tracking.sh
+  # ~/dotfiles/zsh/time_tracking.sh
   ~/dotfiles/zsh/aliases.sh
   ~/dotfiles/zsh/welcome.sh
   ~/dotfiles/zsh/ai.sh
@@ -120,4 +120,31 @@ export PATH="$PATH:$(npm bin -g)"
 
 export PATH="$HOME/.global-node-tools/node_modules/.bin:$PATH"
 
+export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+# User configuration
 
+# Uncomment to set your language environment
+# export LANG=en_US.UTF-8
+
+# Preferred editor for local and remote sessions
+# if [[ -n $SSH_CONNECTION ]]; then
+#   export EDITOR='vim'
+# else
+#   export EDITOR='mvim'
+# fi
+
+# Alias to map vim to nvim
+alias vim='nvim'
+
+# Compilation flags
+# export ARCHFLAGS="-arch x86_64"
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+
+autoload -Uz compinit
+zstyle ':completion:*' menu select
+fpath+=~/.zfunc
+export PATH="$HOME/.local/bin:$PATH"
+
+export PATH=/home/abhishek.sharma19/.opencode/bin:$PATH
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
