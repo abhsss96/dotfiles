@@ -12,6 +12,7 @@ vim.api.nvim_create_autocmd("User", {
     require("config.mason-fix")
   end,
 })
+
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "haml",
   callback = function()
