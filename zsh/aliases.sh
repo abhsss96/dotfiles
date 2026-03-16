@@ -50,6 +50,10 @@ tma() {
 
   [[ -z "$session" ]] && return 1
 
+  if command -v guake &>/dev/null; then
+    guake -r "$session" 2>/dev/null
+  fi
+
   if [[ -n "$TMUX" ]]; then
     tmux switch-client -t "$session"
   else
