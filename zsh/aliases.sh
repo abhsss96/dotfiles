@@ -15,7 +15,8 @@ fi
 
 # ── Editor ─────────────────────────────────────────────────────────────────────
 alias vim='nvim'
-alias n='nvim'
+alias nn='nano'
+alias n='nvim .'
 
 # ── Git ────────────────────────────────────────────────────────────────────────
 
@@ -33,8 +34,25 @@ pgco() {
 # Checkout latest PR and open lazygit
 alias ghr='gh pr checkout $(gh pr list --limit 1 --json number -q ".[0].number") && lazygit'
 
+# ── Kubernetes ─────────────────────────────────────────────────────────────────
+kubelogs() {
+  local namespace=$(kubectl get namespaces | eval percol | awk '{ print $1 }')
+  local pod_name=$(kubectl get po --namespace=$namespace | eval percol | awk '{ print $1 }')
+  kubectl logs $pod_name --namespace=$namespace --follow
+}
+
+kubessh() {
+  local namespace=$(kubectl get namespaces | eval percol | awk '{ print $1 }')
+  local pod_name=$(kubectl get po --namespace=$namespace | eval percol | awk '{ print $1 }')
+  kubectl exec -it $pod_name --namespace=$namespace -- bash
+}
+
 # ── Tmux ───────────────────────────────────────────────────────────────────────
+alias tm='tmux -u'
 alias ta='tmux -u attach-session -t'
+alias tl='tmux list-sessions'
+alias tr='tmux source-file ~/.tmux.conf'
+alias tmuxr='tmux source ~/.tmux.conf'
 
 # Attach to a tmux session interactively
 tma() {
@@ -61,38 +79,9 @@ tma() {
   fi
 }
 
-# ── GitHub Dash ────────────────────────────────────────────────────────────────
-alias gdc='nvim ~/.config/gh-dash/config.yml'
-
-gdash() {
-  local config="$HOME/.config/gh-dash/config.yml"
-  local folder=$(basename "$PWD")
-
-  mkdir -p "$(dirname "$config")"
-  touch "$config"
-
-  if ! grep -q "repoPaths:" "$config"; then
-    echo "  annkissam/$folder: $PWD" >>"$config"
-  elif ! grep -q "annkissam/$folder:" "$config"; then
-    echo "  annkissam/$folder: $PWD" >>"$config"
-  fi
-
-  gh dash
-}
-
-# PR review dashboard in tmux
-pr_review_dashboard() {
-  if [[ -n "$TMUX" ]]; then
-    tmux split-window -h -p 50 "lazygit"
-    tmux select-pane -U
-    clear
-    gdash
-  else
-    tmux new-session \; send-keys 'gdash' C-m \; split-window -v -p 50 'lazygit'
-  fi
-}
-
-alias prd='pr_review_dashboard'
+# ── SSH ────────────────────────────────────────────────────────────────────────
+alias sa='ssh-add ~/.ssh/id_rsa'
 
 # ── AI ─────────────────────────────────────────────────────────────────────────
-alias c='chatgpt'
+alias c='claude'
+alias a='agent'

@@ -1,0 +1,50 @@
+customCommands:
+  # View CI runs for the selected branch (press C in branches panel)
+  - key: "C"
+    context: "localBranches"
+    description: "View CI runs for branch"
+    command: "gh run list --branch {{.SelectedLocalBranch.Name}} --limit 10"
+    subprocess: true
+
+  # View CI runs for the selected commit (press C in commits panel)
+  - key: "C"
+    context: "commits"
+    description: "View CI runs for commit"
+    command: "gh run list --commit {{.SelectedLocalCommit.Sha}} --limit 5"
+    subprocess: true
+
+  # Watch the latest CI run live (press W in branches panel)
+  - key: "W"
+    context: "localBranches"
+    description: "Watch latest CI run"
+    command: "gh run watch $(gh run list --branch {{.SelectedLocalBranch.Name}} --limit 1 --json databaseId -q '.[0].databaseId')"
+    subprocess: true
+
+  # Stream logs of the latest CI run (press L in branches panel)
+  - key: "L"
+    context: "localBranches"
+    description: "View CI logs for latest run"
+    command: "gh run view $(gh run list --branch {{.SelectedLocalBranch.Name}} --limit 1 --json databaseId -q '.[0].databaseId') --log"
+    subprocess: true
+
+  # CircleCI: list pipelines for current branch (press P in branches panel)
+  - key: "P"
+    context: "localBranches"
+    description: "View CircleCI pipelines for branch"
+    command: >-
+      PROJECT=$(git remote get-url origin | sed -E 's|.*github\.com[:/](.+/.+?)(\.git)?$|\1|') &&
+      RESPONSE=$(curl -s -H "Circle-Token: $CIRCLECI_CLI_TOKEN"
+      "https://circleci.com/api/v2/project/gh/$PROJECT/pipeline?branch={{.SelectedLocalBranch.Name}}") &&
+      echo "$RESPONSE" | jq -r 'if .items and (.items | length > 0) then .items[] | "[\(.number)] \(.state) — \(.vcs.branch) — \(.created_at)" else "Error: \(.message // "No pipelines found. Project: '"'"'$PROJECT'"'"', Token set: \(env.CIRCLECI_CLI_TOKEN // "NO")")" end'
+    subprocess: true
+
+  # CircleCI: list pipelines for selected commit (press P in commits panel)
+  - key: "P"
+    context: "commits"
+    description: "View CircleCI pipelines for commit"
+    command: >-
+      PROJECT=$(git remote get-url origin | sed -E 's|.*github\.com[:/](.+/.+?)(\.git)?$|\1|') &&
+      RESPONSE=$(curl -s -H "Circle-Token: $CIRCLECI_CLI_TOKEN"
+      "https://circleci.com/api/v2/project/gh/$PROJECT/pipeline?branch={{.SelectedLocalCommit.Sha}}") &&
+      echo "$RESPONSE" | jq -r 'if .items and (.items | length > 0) then .items[] | "[\(.number)] \(.state) — \(.vcs.revision[:7]) — \(.created_at)" else "Error: \(.message // "No pipelines found. Project: '"'"'$PROJECT'"'"'")" end'
+    subprocess: true

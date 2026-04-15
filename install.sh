@@ -37,6 +37,11 @@ mkdir -p "$HOME/.config"
 safe_link "$DOTFILES/nvim" "$HOME/.config/nvim"
 success "~/.config/nvim linked"
 
+info "Symlinking lazygit config..."
+mkdir -p "$HOME/.config/lazygit"
+safe_link "$DOTFILES/lazygit/config.yml" "$HOME/.config/lazygit/config.yml"
+success "~/.config/lazygit/config.yml linked"
+
 info "Symlinking tmux config..."
 safe_link "$DOTFILES/tmux.conf" "$HOME/.tmux.conf"
 success "~/.tmux.conf linked"
@@ -162,10 +167,27 @@ install_bat() {
   success "bat installed"
 }
 
+# circleci CLI
+install_circleci() {
+  if command -v circleci &>/dev/null; then
+    success "circleci CLI already installed"
+    return
+  fi
+  info "Installing circleci CLI..."
+  if [[ "$OSTYPE" == "darwin"* ]]; then
+    brew install circleci
+  else
+    curl -fLSs https://raw.githubusercontent.com/CircleCI-Public/circleci-cli/main/install.sh | sudo bash
+  fi
+  success "circleci CLI installed"
+}
+
 install_eza
 install_zoxide
 install_fzf
 install_bat
+install_circleci
+install_pkg jq
 
 echo ""
 success "All done! Restart your shell or run: source ~/.zshrc"
