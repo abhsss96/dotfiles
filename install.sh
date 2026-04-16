@@ -46,8 +46,8 @@ info "Symlinking tmux config..."
 safe_link "$DOTFILES/tmux.conf" "$HOME/.tmux.conf"
 success "~/.tmux.conf linked"
 
-info "Symlinking .tool-versions..."
-safe_link "$DOTFILES/.tool-versions" "$HOME/.tool-versions"
+info "Symlinking tool-versions..."
+safe_link "$DOTFILES/tool-versions" "$HOME/.tool-versions"
 success "~/.tool-versions linked"
 
 # ── oh-my-zsh ─────────────────────────────────────────────────────────────────
@@ -189,7 +189,7 @@ install_circleci() {
 # smartthings CLI — installs under the Node version in .tool-versions
 install_smartthings() {
   local required_node
-  required_node=$(grep '^nodejs' "$DOTFILES/.tool-versions" | awk '{print $2}')
+  required_node=$(grep '^nodejs' "$DOTFILES/tool-versions" | awk '{print $2}')
 
   # Ensure the required Node version is installed via asdf
   if command -v asdf &>/dev/null; then
