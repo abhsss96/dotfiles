@@ -28,23 +28,27 @@ _monitor_check() {
 monitor_hdmi1() {
   _monitor_check || return 1
   echo "Switching to HDMI 1..."
-  _smartthings_cmd devices:commands "$SMARTTHINGS_MONITOR_ID" 'main:mediaInputSource:setInputSource("HDMI1")' \
-    && echo "HDMI1" > "$HOME/.monitor_input_state"
+  _smartthings_cmd devices:commands "$SMARTTHINGS_MONITOR_ID" 'main:mediaInputSource:setInputSource("HDMI1")'
 }
 
 monitor_hdmi2() {
   _monitor_check || return 1
   echo "Switching to HDMI 2..."
-  _smartthings_cmd devices:commands "$SMARTTHINGS_MONITOR_ID" 'main:mediaInputSource:setInputSource("HDMI2")' \
-    && echo "HDMI2" > "$HOME/.monitor_input_state"
+  _smartthings_cmd devices:commands "$SMARTTHINGS_MONITOR_ID" 'main:mediaInputSource:setInputSource("HDMI2")'
 }
 
 monitor_toggle() {
   _monitor_check || return 1
-  local state_file="$HOME/.monitor_input_state"
   local current
-  current=$(cat "$state_file" 2>/dev/null)
+  current=$(_smartthings_cmd devices:status "$SMARTTHINGS_MONITOR_ID" 2>/dev/null \
+    | jq -r '.components.main."samsungvd.mediaInputSource".inputSource.value // empty')
 
+  if [[ -z "$current" ]]; then
+    echo "Could not read current input source." >&2
+    return 1
+  fi
+
+  echo "Current input: $current"
   if [[ "$current" == "HDMI1" ]]; then
     monitor_hdmi2
   else

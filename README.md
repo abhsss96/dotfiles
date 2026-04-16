@@ -20,11 +20,12 @@ cd ~/dotfiles
 ```
 
 The install script will:
-- Symlink `zshrc`, `nvim`, and `tmux.conf` to their expected locations
+- Symlink `zshrc`, `nvim`, `tmux.conf`, and `.tool-versions` to their expected locations
 - Install [oh-my-zsh](https://ohmyz.sh) if not present
 - Install custom zsh plugins (`zsh-autosuggestions`, `zsh-syntax-highlighting`, `elixir`)
 - Install [Powerlevel10k](https://github.com/romkatv/powerlevel10k) theme
-- Install CLI tools: `eza`, `zoxide`, `fzf`, `bat` (via brew on macOS, apt/dnf/pacman on Linux)
+- Install CLI tools: `eza`, `zoxide`, `fzf`, `bat`, `smartthings` (via brew on macOS, apt/dnf/pacman on Linux)
+- Create `~/.zshrc.local` with `chmod 600` for machine-specific secrets
 
 ## Zsh
 
@@ -86,15 +87,43 @@ Ruby, Rails, Elixir, TypeScript, JSON, YAML, Docker, Markdown, ERB
 | `<A-↑↓←→>` | Navigate splits / tmux panes seamlessly |
 | `yf` | Yank relative file path |
 
-## Credentials
+## Secrets & local overrides
 
-Copy the example file and fill in your keys:
+Machine-specific config and secrets live in `~/.zshrc.local` (gitignored, never committed).
+Copy the example and fill in your values:
 
 ```bash
-cp zsh/credentials.sh.example zsh/credentials.sh
+cp zshrc.local.example ~/.zshrc.local
 ```
 
-`zsh/credentials.sh` is gitignored and never committed.
+| Variable | Description |
+|----------|-------------|
+| `SMARTTHINGS_MONITOR_ID` | Samsung M8 device ID (from `smartthings devices`) |
+| `ANTHROPIC_API_KEY` | Anthropic API key |
+| `GITHUB_TOKEN` | GitHub personal access token |
+| `OPENAI_API_KEY` | OpenAI API key |
+
+## Samsung M8 Monitor Input Switching
+
+Controls the monitor's HDMI input via the [SmartThings CLI](https://github.com/SmartThingsCommunity/smartthings-cli).
+Useful when two machines share the same monitor.
+
+### Setup
+
+1. Authenticate: `smartthings login`
+2. Find device ID: `smartthings devices`
+3. Add to `~/.zshrc.local`:
+   ```bash
+   export SMARTTHINGS_MONITOR_ID='your-device-id'
+   ```
+
+### Commands
+
+| Command | Action |
+|---------|--------|
+| `hdmi1` | Switch to HDMI 1 |
+| `hdmi2` | Switch to HDMI 2 |
+| `hdmi-toggle` / `t` | Toggle between HDMI 1 and 2 (reads live state from SmartThings) |
 
 ## Requirements
 
