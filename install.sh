@@ -46,6 +46,10 @@ info "Symlinking tmux config..."
 safe_link "$DOTFILES/tmux.conf" "$HOME/.tmux.conf"
 success "~/.tmux.conf linked"
 
+info "Symlinking .tool-versions..."
+safe_link "$DOTFILES/.tool-versions" "$HOME/.tool-versions"
+success "~/.tool-versions linked"
+
 # ── oh-my-zsh ─────────────────────────────────────────────────────────────────
 if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
   info "Installing oh-my-zsh..."
@@ -182,12 +186,51 @@ install_circleci() {
   success "circleci CLI installed"
 }
 
+# smartthings CLI — installs under the Node version in .tool-versions
+install_smartthings() {
+  local required_node
+  required_node=$(grep '^nodejs' "$DOTFILES/.tool-versions" | awk '{print $2}')
+
+  # Ensure the required Node version is installed via asdf
+  if command -v asdf &>/dev/null; then
+    if ! asdf list nodejs 2>/dev/null | grep -q "$required_node"; then
+      info "Installing Node.js $required_node via asdf..."
+      asdf install nodejs "$required_node"
+    fi
+    # Run npm install under the exact Node version from .tool-versions
+    local node_bin="$HOME/.asdf/installs/nodejs/$required_node/bin"
+    if [[ ! -x "$node_bin/npm" ]]; then
+      warn "Node $required_node bin not found at $node_bin — skipping smartthings install"
+      return
+    fi
+    if [[ -x "$node_bin/smartthings" ]]; then
+      success "smartthings CLI already installed (Node $required_node)"
+      return
+    fi
+    info "Installing SmartThings CLI under Node $required_node..."
+    "$node_bin/npm" install -g @smartthings/cli
+    success "smartthings CLI installed"
+  else
+    warn "asdf not found — install Node.js $required_node manually, then run: npm install -g @smartthings/cli"
+  fi
+}
+
 install_eza
 install_zoxide
 install_fzf
 install_bat
 install_circleci
+install_smartthings
 install_pkg jq
+
+# ── Local overrides file ──────────────────────────────────────────────────────
+if [[ ! -f "$HOME/.zshrc.local" ]]; then
+  info "Creating ~/.zshrc.local..."
+  touch "$HOME/.zshrc.local"
+  success "~/.zshrc.local created"
+fi
+chmod 600 "$HOME/.zshrc.local"
+success "~/.zshrc.local permissions set to 600"
 
 echo ""
 success "All done! Restart your shell or run: source ~/.zshrc"

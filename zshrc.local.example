@@ -1,0 +1,10 @@
+# Copy this to ~/.zshrc.local and fill in values.
+# This file is NOT committed to git — keep all secrets here.
+
+# Samsung M8 monitor device ID (from: smartthings devices)
+export SMARTTHINGS_MONITOR_ID=''
+
+# API keys
+export ANTHROPIC_API_KEY=''
+export GITHUB_TOKEN=''
+export OPENAI_API_KEY=''

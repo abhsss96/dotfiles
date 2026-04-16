@@ -2,3 +2,5 @@ creds.txt
 notes.yml
 zsh/credentials.sh
 node_modules/
+.zshrc.local
+.monitor_input_state

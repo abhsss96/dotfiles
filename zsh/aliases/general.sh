@@ -68,8 +68,21 @@ tma() {
 
   [[ -z "$session" ]] && return 1
 
+  # Rename the terminal tab at the application level (mirrors guake -r behaviour)
   if command -v guake &>/dev/null; then
     guake -r "$session" 2>/dev/null
+  elif [[ -n "$ITERM_SESSION_ID" ]]; then
+    osascript 2>/dev/null <<EOF
+      tell application "iTerm2"
+        tell current window
+          tell current tab
+            tell current session
+              set name to "$session"
+            end tell
+          end tell
+        end tell
+      end tell
+EOF
   fi
 
   if [[ -n "$TMUX" ]]; then

@@ -69,8 +69,11 @@ zstyle ':completion:*' menu select
 fpath+=~/.zfunc
 
 # Source custom configs
+for FILE in ~/dotfiles/zsh/aliases/*.sh; do
+  source "$FILE"
+done
+
 FILES_TO_SOURCE=(
-  ~/dotfiles/zsh/aliases.sh
   ~/dotfiles/zsh/ai.sh
   ~/dotfiles/zsh/welcome.sh
   ~/dotfiles/zsh/credentials.sh
@@ -84,3 +87,7 @@ for FILE in "${FILES_TO_SOURCE[@]}"; do
     echo "Warning: $FILE does not exist."
   fi
 done
+
+# Load local overrides — secrets, machine-specific config (not in git)
+[[ -f ~/.zshrc.local ]] || touch ~/.zshrc.local
+source ~/.zshrc.local
