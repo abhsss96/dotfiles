@@ -1,6 +1,4 @@
 # ── Navigation ────────────────────────────────────────────────────────────────
-
-# Use eza if available, fallback to ls
 if command -v eza &>/dev/null; then
   alias ls='eza --icons --group-directories-first'
   alias ll='eza -alF --icons --group-directories-first --git'
@@ -13,14 +11,15 @@ else
   alias l='ls -CF'
 fi
 
-# ── Editor ─────────────────────────────────────────────────────────────────────
+# ── Editor ────────────────────────────────────────────────────────────────────
 alias vim='nvim'
 alias nn='nano'
 alias n='nvim .'
 
-# ── Git ────────────────────────────────────────────────────────────────────────
+# ── Git ───────────────────────────────────────────────────────────────────────
+alias ghr='gh pr checkout $(gh pr list --limit 1 --json number -q ".[0].number") && lazygit'
 
-# Git checkout using fzf (falls back to percol if fzf not available)
+# Interactive branch checkout
 pgco() {
   if command -v fzf &>/dev/null; then
     git checkout $(git branch | fzf)
@@ -31,30 +30,38 @@ pgco() {
   fi
 }
 
-# Checkout latest PR and open lazygit
-alias ghr='gh pr checkout $(gh pr list --limit 1 --json number -q ".[0].number") && lazygit'
+# Copy current git branch name to clipboard (macOS + Linux)
+ygb() {
+  local branch
+  branch=$(git symbolic-ref --short HEAD 2>/dev/null) || {
+    echo "Not in a git repository or no branch checked out." >&2
+    return 1
+  }
 
-# ── Kubernetes ─────────────────────────────────────────────────────────────────
-kubelogs() {
-  local namespace=$(kubectl get namespaces | eval percol | awk '{ print $1 }')
-  local pod_name=$(kubectl get po --namespace=$namespace | eval percol | awk '{ print $1 }')
-  kubectl logs $pod_name --namespace=$namespace --follow
+  if [[ "$OSTYPE" == darwin* ]] && command -v pbcopy &>/dev/null; then
+    printf '%s' "$branch" | pbcopy
+  elif [[ -n "$WAYLAND_DISPLAY" ]] && command -v wl-copy &>/dev/null; then
+    printf '%s' "$branch" | wl-copy
+  elif command -v xclip &>/dev/null; then
+    printf '%s' "$branch" | xclip -selection clipboard
+  elif command -v xsel &>/dev/null; then
+    printf '%s' "$branch" | xsel --clipboard --input
+  else
+    echo "No clipboard tool found. Install pbcopy (macOS), wl-copy, xclip, or xsel." >&2
+    return 1
+  fi
+
+  echo "Copied: $branch"
 }
 
-kubessh() {
-  local namespace=$(kubectl get namespaces | eval percol | awk '{ print $1 }')
-  local pod_name=$(kubectl get po --namespace=$namespace | eval percol | awk '{ print $1 }')
-  kubectl exec -it $pod_name --namespace=$namespace -- bash
-}
-
-# ── Tmux ───────────────────────────────────────────────────────────────────────
+# ── Tmux ──────────────────────────────────────────────────────────────────────
 alias tm='tmux -u'
 alias ta='tmux -u attach-session -t'
 alias tl='tmux list-sessions'
 alias tr='tmux source-file ~/.tmux.conf'
 alias tmuxr='tmux source ~/.tmux.conf'
 
-# Attach to a tmux session interactively
+# Interactive tmux session attach
 tma() {
   local session
   if command -v fzf &>/dev/null; then
@@ -92,9 +99,22 @@ EOF
   fi
 }
 
-# ── SSH ────────────────────────────────────────────────────────────────────────
+# ── Kubernetes ────────────────────────────────────────────────────────────────
+kubelogs() {
+  local namespace=$(kubectl get namespaces | eval percol | awk '{ print $1 }')
+  local pod_name=$(kubectl get po --namespace=$namespace | eval percol | awk '{ print $1 }')
+  kubectl logs $pod_name --namespace=$namespace --follow
+}
+
+kubessh() {
+  local namespace=$(kubectl get namespaces | eval percol | awk '{ print $1 }')
+  local pod_name=$(kubectl get po --namespace=$namespace | eval percol | awk '{ print $1 }')
+  kubectl exec -it $pod_name --namespace=$namespace -- bash
+}
+
+# ── SSH ───────────────────────────────────────────────────────────────────────
 alias sa='ssh-add ~/.ssh/id_rsa'
 
-# ── AI ─────────────────────────────────────────────────────────────────────────
+# ── AI ────────────────────────────────────────────────────────────────────────
 alias c='claude'
 alias a='agent'
